@@ -142,13 +142,15 @@ O WSL não expõe a webcam como um dispositivo OpenCV comum. Para câmera local,
 
 ## Configuração dos artefatos de visão
 
-Valores padrão:
+Em uma cópia-fonte do workspace, os valores padrão são:
 
 ```text
 data/                  dataset local
 models/best_model.pt   checkpoint local
 results/               relatórios e figuras
 ```
+
+Em uma instalação que não preserve a árvore-fonte, o fallback é determinístico: `%LOCALAPPDATA%/Wallyngton` no Windows e `${XDG_DATA_HOME:-~/.local/share}/wallyngton` no Linux. O diretório atual do processo não altera esses caminhos.
 
 Caminhos alternativos:
 
@@ -157,6 +159,8 @@ export WALLYNGTON_VISION_DATA_DIR=/caminho/dados
 export WALLYNGTON_VISION_CHECKPOINT=/caminho/modelo.pt
 export WALLYNGTON_VISION_RESULTS_DIR=/caminho/resultados
 ```
+
+`WALLYNGTON_WORKSPACE_ROOT` pode substituir de uma vez a raiz usada pelos três diretórios padrão.
 
 ## Dependências
 

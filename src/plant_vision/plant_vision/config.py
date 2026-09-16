@@ -5,8 +5,18 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
+def _user_data_root() -> Path:
+    """Return a deterministic per-user runtime directory."""
+    if os.name == "nt":
+        base = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+        return (base / "Wallyngton").resolve()
+
+    base = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share"))
+    return (base / "wallyngton").resolve()
+
+
 def _workspace_root() -> Path:
-    """Resolve the workspace root in source and installed environments."""
+    """Resolve the source workspace or a deterministic installed-data root."""
     configured_root = os.environ.get("WALLYNGTON_WORKSPACE_ROOT")
     if configured_root:
         return Path(configured_root).expanduser().resolve()
@@ -15,7 +25,7 @@ def _workspace_root() -> Path:
     if (source_root / "src" / "plant_vision").is_dir():
         return source_root
 
-    return Path.cwd().resolve()
+    return _user_data_root()
 
 
 def _runtime_path(environment_variable: str, default: Path) -> Path:

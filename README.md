@@ -95,6 +95,14 @@ cd Pororoca---Grupo-A---PB-NRE-2026
 
 source /opt/ros/jazzy/setup.bash
 
+rosdep update
+rosdep install \
+    --from-paths src \
+    --ignore-src \
+    --rosdistro jazzy \
+    --skip-keys="python-piper-tts-pip python3-sounddevice-pip python3-numpy python3-opencv python3-pil python3-matplotlib python3-sklearn python3-torch python3-torchvision" \
+    -r -y
+
 uv venv --python /usr/bin/python3.12 --system-site-packages
 uv sync
 source .venv/bin/activate
