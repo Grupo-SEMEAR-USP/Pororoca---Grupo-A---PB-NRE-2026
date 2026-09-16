@@ -1,0 +1,40 @@
+[project]
+name = "wallyngton-workspace"
+version = "0.1.0"
+description = "Python environment for the Wallyngton ROS 2 workspace"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[dependency-groups]
+voice = [
+    "piper-tts>=1.8,<2",
+    "sounddevice>=0.5,<1",
+]
+vision = [
+    "plant-vision",
+    "numpy>=2.5,<3",
+    "pillow>=12.3,<13",
+    "torch>=2.13,<2.14",
+    "torchvision>=0.28,<0.29",
+    "opencv-python>=5.0,<6",
+    "matplotlib>=3.11,<4",
+    "scikit-learn>=1.9,<2",
+]
+dev = [
+    "colcon-common-extensions>=0.3,<1",
+    "ruff>=0.11,<1",
+]
+
+[tool.uv]
+package = false
+default-groups = ["voice", "dev"]
+
+[tool.uv.sources]
+plant-vision = { path = "src/plant_vision", editable = true }
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
