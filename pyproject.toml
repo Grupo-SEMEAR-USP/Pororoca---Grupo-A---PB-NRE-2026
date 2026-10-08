@@ -9,6 +9,7 @@ dependencies = []
 voice = [
     "piper-tts>=1.8,<2",
     "sounddevice>=0.5,<1",
+    "soundfile",
 ]
 vision = [
     "plant-vision",

@@ -14,6 +14,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'voice_model'), glob(os.path.join('voice_model', 'wendel.onnx'))),
         (os.path.join('share', package_name, 'voice_model'), glob(os.path.join('voice_model', 'wendel.onnx.json'))),
+        (os.path.join('share', package_name, 'audios'), glob(os.path.join('audios', '*.wav')))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -29,7 +30,7 @@ setup(
     entry_points={
         'console_scripts': [
             "voice_synthesizer = voice_interaction.voice_synthesizer:main",
-            "text_emmiter = voice_interaction.text_emmiter:main"
+            "preset_audio_player = voice_interaction.preset_audio_player:main"
         ],
     },
 )
