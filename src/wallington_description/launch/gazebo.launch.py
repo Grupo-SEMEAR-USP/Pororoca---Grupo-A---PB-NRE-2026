@@ -23,7 +23,7 @@ def generate_launch_description():
     #Coloca o mundo em que o robô vai ser gerado como argumento
     world_arg= DeclareLaunchArgument( 
         name="world",
-        default_value= os.path.join(wallington_description_dir, "worlds", "blank_world.sdf"),
+        default_value= os.path.join(wallington_description_dir, "worlds", "box_world.sdf"),
         description="Caminho absoluto até o mundo em que o robo sera carregado"
     )
 
@@ -79,6 +79,10 @@ def generate_launch_description():
         output="screen"
     )
 
+    wallington_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(get_package_share_directory("wallington_controller"), "launch"), "/controller.launch.py"])
+    )
+
     return LaunchDescription([
         model_arg,
         world_arg,
@@ -86,5 +90,6 @@ def generate_launch_description():
         gazebo_resource_path,
         gazebo,
         gz_spawn_entity,
-        gz_bridge
+        gz_bridge,
+        wallington_controller
     ])
