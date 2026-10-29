@@ -6,6 +6,7 @@ from navigation.fsm.states import *
 from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import Range
 from wallington_interfaces.srv import VisionRequest
+from std_msgs.msg import String
 
 class StateMachineNode(Node):
     def __init__(self):
@@ -16,13 +17,14 @@ class StateMachineNode(Node):
             'msg': Range(),
             'ang_vel': 0.0,
             'lin_vel': 0.0,
-            'search_object': True,
+            'object_searching': '',
             'last_range': 0.0,
             't0': 0.0,
             'tf': 0.0,
             'dt': 0.0,
             'id_func': self.call_identification_server,
             'found_object': False,
+            'obstacle_distance': 0,
         }
 
         self.states = {
@@ -30,13 +32,15 @@ class StateMachineNode(Node):
             'SEARCHING': SearchingState(),
             'IDENTIFYING': IdentifyingState(),
             'ALIGNING': AligningState(),
-            'APPROACHING': ApproachingState()
+            'APPROACHING': ApproachingState(),
+            'WAITING': WaitingObstacleState(),
         }
 
         self.current_state_key = 'IDLE'
         self.states[self.current_state_key].on_enter(self.blackboard)
 
         self.velocity_pub = self.create_publisher(TwistStamped, "wallington_controller/cmd_vel", 10)
+        self.action_sub = self.create_subscription(String, "movement_action", self.action_callback, 10)
         self.ultrasonic_sub = self.create_subscription(Range, "ultrasonic", self.ultrasonic_callback, 10)
 
         self.create_timer(0.1, self.timer_callback)
@@ -52,6 +56,9 @@ class StateMachineNode(Node):
         self.blackboard['last_range'] = self.blackboard['msg'].range
         self.blackboard['msg'] = msg
         self.fsm_tick()
+
+    def action_callback(self, msg):
+        self.blackboard['object_searching'] = msg.data
 
     def call_identification_server(self, color):
         client = self.create_client(VisionRequest, "tag_identification")

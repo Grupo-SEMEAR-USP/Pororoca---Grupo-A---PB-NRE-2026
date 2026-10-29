@@ -104,6 +104,9 @@
             <plugin filename="EntityTree" name="Entity tree">
             </plugin>
 
+            <plugin filename="ComponentInspector" name="Transform Control">
+            </plugin>
+
             <plugin filename="InteractiveViewControl" name="Interactive view control">
                 <gz-gui>
                 <property key="resizable" type="bool">false</property><property key="width" type="double">5</property><property key="height" type="double">5</property><property key="state" type="string">floating</property><property key="showTitleBar" type="bool">false</property>
@@ -154,7 +157,7 @@
         </model>
 
         <model name="blue box">
-            <pose>1 1 0.25 0 0 0</pose>
+            <pose>3 3 0.25 0 0 0</pose>
             <static>true</static>
             <link name="box_link">
                 <collision name="collision">
@@ -182,7 +185,7 @@
         </model>
 
         <model name="red box">
-            <pose>-1 -1 0.25 0 0 0</pose>
+            <pose>-3 -3 0.25 0 0 0</pose>
             <static>true</static>
             <link name="box_link">
                 <collision name="collision">
@@ -210,7 +213,7 @@
         </model>
 
         <model name="yellow box">
-            <pose>-1 1 0.25 0 0 0</pose>
+            <pose>-3 3 0.25 0 0 0</pose>
             <static>true</static>
             <link name="box_link">
                 <collision name="collision">
