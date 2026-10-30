@@ -34,3 +34,5 @@ Thumbs.db
 /results/
 *.pt
 *.pth
+src/voice_interaction/audios
+src/voice_interaction/voice_model
