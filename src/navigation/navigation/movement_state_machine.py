@@ -1,11 +1,13 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.action import ActionClient
 
 from navigation.fsm.states import *
 
 from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import Range
 from wallington_interfaces.srv import VisionRequest
+from wallington_interfaces.action import AudioOutput
 from std_msgs.msg import String
 
 class StateMachineNode(Node):
@@ -23,6 +25,7 @@ class StateMachineNode(Node):
             'tf': 0.0,
             'dt': 0.0,
             'id_func': self.call_identification_server,
+            'tts_func': self.call_tts_server,
             'found_object': False,
             'obstacle_distance': 0,
         }
@@ -63,15 +66,15 @@ class StateMachineNode(Node):
     def call_identification_server(self, color):
         client = self.create_client(VisionRequest, "tag_identification")
         while not client.wait_for_service(1.0):
-            self.get_logger().warn('Waiting for server')
+            self.get_logger().warn('Waiting for identification server')
 
         request = VisionRequest.Request()
         request.color = color
 
         future = client.call_async(request=request)
-        future.add_done_callback(lambda f: self.process_result(f))
+        future.add_done_callback(lambda f: self.process_id_result(f))
 
-    def process_result(self, future):
+    def process_id_result(self, future):
         try:
             response = future.result()
             found = response.answer  
@@ -81,6 +84,25 @@ class StateMachineNode(Node):
             
         except Exception as e:
             self.get_logger().error(f"Service call failed: {e}")
+
+    def call_tts_server(self, msg):
+        client = ActionClient(self, AudioOutput, 'audio_output')
+
+        while not client.wait_for_server(1.0):
+            self.get_logger().warn('Waiting for audio output server')
+
+        goal = AudioOutput.Goal()
+        goal.text = msg
+
+        future = client.send_goal_async(goal)
+        future.add_done_callback(self.process_tts_response)
+
+    def process_tts_response(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info('TTS goal rejected...')
+            return
+        self.get_logger().info('TTS goal accepted!')
 
     def fsm_tick(self):
         current_state_obj = self.states[self.current_state_key]
