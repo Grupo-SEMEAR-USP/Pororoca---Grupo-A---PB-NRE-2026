@@ -12,19 +12,8 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([os.path.join(get_package_share_directory("wallington_description"), "launch"), "/gazebo.launch.py"]),
     )
 
-    voice_synth_node = Node(
-        package="voice_interaction",
-        executable="voice_synthesizer"
-    )
-
-    audio_player_node = Node(
-        package="voice_interaction",
-        executable="preset_audio_player"
-    )
-
-    voice_command_processing_node = Node(
-        package="voice_interaction",
-        executable="voice_command_processing"
+    voice_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(get_package_share_directory("wallington_bringup"), "launch"), "/voice_launch.py"]),
     )
 
     identification_node = Node(
@@ -39,9 +28,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gazebo_launch,
-        voice_synth_node,
-        audio_player_node,
-        voice_command_processing_node,
+        voice_launch,
         identification_node,
         navigation_node
     ])

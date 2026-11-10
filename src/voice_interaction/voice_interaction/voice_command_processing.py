@@ -4,12 +4,13 @@ from rclpy.node import Node
 from rclpy.action import ActionClient
 
 from std_msgs.msg import String
+from wallington_interfaces.msg import SpeechRecognition
 from wallington_interfaces.action import AudioOutput
 
 class voice_command_processing_node(Node):
     def __init__(self):
         super().__init__("voice_command_processing")
-        self.voice_sub = self.create_subscription(String, "voice_commands", self.voice_callback,10)
+        self.voice_sub = self.create_subscription(SpeechRecognition, "voice_commands", self.voice_callback,10)
         self.tts_client = ActionClient(self, AudioOutput, 'audio_output')
         self.audio_pub = self.create_publisher(String, "audios", 10)
         self.movement_pub = self.create_publisher(String, "movement_action", 10)
@@ -32,8 +33,13 @@ class voice_command_processing_node(Node):
         self.get_logger().info('TTS goal accepted!')
 
     def voice_callback(self, msg):
-        match(msg.data):
-            case 'horas':
+        data = ''
+        if not msg.is_recognized:
+            data = msg.partial_result
+        else:
+            data = msg.final_result
+        match(data):
+            case 'horas' | 'oração':
                 time = datetime.datetime.now()
                 self.get_logger().info('Time request identified')
                 if(time.hour == 1):

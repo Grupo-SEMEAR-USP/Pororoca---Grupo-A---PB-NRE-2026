@@ -31,7 +31,8 @@ setup(
         'console_scripts': [
             "voice_synthesizer = voice_interaction.voice_synthesizer:main",
             "preset_audio_player = voice_interaction.preset_audio_player:main",
-            "voice_command_processing = voice_interaction.voice_command_processing:main"
+            "voice_command_processing = voice_interaction.voice_command_processing:main",
+            "stt_node = voice_interaction.stt_node:main"
         ],
     },
 )

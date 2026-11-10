@@ -1,0 +1,3 @@
+bool is_recognized
+string final_result
+string partial_result
