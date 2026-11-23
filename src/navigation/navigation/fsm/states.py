@@ -12,6 +12,13 @@ class IdleState(BaseState):
     def execute(self, blackboard):
         possible_objects = ['yellow', 'blue', 'red']
         if blackboard.get('object_searching') in possible_objects:
+            match blackboard.get('object_searching'):
+                case 'yellow':
+                    blackboard['tts_func']('Iniciando a busca pelo objeto amarelo')
+                case 'blue':
+                    blackboard['tts_func']('Iniciando a busca pelo objeto azul')
+                case 'red':
+                    blackboard['tts_func']('Iniciando a busca pelo objeto vermelho')
             return 'SEARCHING'
         return None
 
@@ -26,7 +33,6 @@ class SearchingState(BaseState):
         if(abs(blackboard['msg'].range-blackboard['last_range']) >= 0.5 and blackboard['msg'].range <= 5):
             blackboard['t0'] = Time.from_msg(blackboard['msg'].header.stamp).nanoseconds / S_TO_NS
             return 'IDENTIFYING'
-        
         return None
 
     def on_exit(self, blackboard):
@@ -91,6 +97,7 @@ class WaitingObstacleState(BaseState):
         node_logger.info('Entering WAIT state')
         blackboard['ang_vel'] = 0.0
         blackboard['lin_vel'] = 0.0
+        blackboard['tts_func']('Meu caminho foi interrompido! Alguém pode liberar para mim, por favor?')
 
     def execute(self, blackboard):
         if(abs(blackboard['msg'].range - blackboard['obstacle_distance']) <= 0.25):

@@ -79,9 +79,9 @@ def generate_launch_description():
         output="screen"
     )
 
-    wallington_controller = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(get_package_share_directory("wallington_controller"), "launch"), "/controller.launch.py"])
-    )
+    #wallington_controller = IncludeLaunchDescription(
+    #    PythonLaunchDescriptionSource([os.path.join(get_package_share_directory("wallington_controller"), "launch"), "/controller.launch.py"])
+    #)
 
     return LaunchDescription([
         model_arg,
@@ -91,5 +91,5 @@ def generate_launch_description():
         gazebo,
         gz_spawn_entity,
         gz_bridge,
-        wallington_controller
+        #wallington_controller
     ])

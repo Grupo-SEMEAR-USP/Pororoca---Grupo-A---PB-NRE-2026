@@ -13,6 +13,7 @@ find_package(action_msgs REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/VisionRequest.srv"
   "action/AudioOutput.action"
+  "msg/SpeechRecognition.msg"
 )
 
 ament_export_dependencies(rosidl_default_runtime)

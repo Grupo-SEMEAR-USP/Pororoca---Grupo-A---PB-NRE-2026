@@ -1,0 +1,7 @@
+<library path="custom_motor_bridge">
+    <class name="firmware_interactions/CustomMotorBridge"
+            type="CustomMotorBridge"
+            base_class_type="hardware_interface::SystemInterface">
+        <description>Custom ros2 hardware interfaces that exports the motor commands to a topic that can be read by the ESP microcontroller</description>
+    </class>
+</library>
