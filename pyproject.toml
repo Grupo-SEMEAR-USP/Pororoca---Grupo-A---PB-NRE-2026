@@ -13,11 +13,11 @@ voice = [
 ]
 vision = [
     "plant-vision",
-    "numpy>=2.5,<3",
+    "numpy<2",
     "pillow>=12.3,<13",
     "torch>=2.13,<2.14",
     "torchvision>=0.28,<0.29",
-    "opencv-python>=5.0,<6",
+    "opencv-python",
     "matplotlib>=3.11,<4",
     "scikit-learn>=1.9,<2",
 ]

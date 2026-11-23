@@ -28,6 +28,7 @@ setup(
             "predict_plant = plant_vision.cli.predict_image:main",
             "classify_camera = plant_vision.cli.classify_camera:main",
             "detect_tag_camera = plant_vision.cli.detect_tag_camera:main",
+            "pc_camera_publish = plant_vision.cli.pc_camera_publish:main"
         ],
     },
 )
